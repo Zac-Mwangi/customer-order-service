@@ -105,12 +105,6 @@ WSGI_APPLICATION = "CustomerOrderService.wsgi.application"
 
 import dj_database_url
 
-# DATABASES = {
-#     "default": dj_database_url.parse(
-#         "postgresql://customer_order_user:F3xf0L4Jh4zVzsIZuSHeorVSCM7jAkw7@dpg-cpujkd5ds78s73ducer0-a.oregon-postgres.render.com/customer_order"
-#     ),
-# }
-
 DATABASES = {
     "default": dj_database_url.parse(env("DATABASE_URL")),
 }
@@ -149,6 +143,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
