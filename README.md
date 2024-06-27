@@ -7,18 +7,6 @@
 
 > > Our project focuses on developing a Django-based backend service to manage customer and order data efficiently. It aims to address the common challenges businesses face in organizing and processing customer interactions and orders.
 
-# API Endpoints
-
->> REGISTER<img src="./screenshots/register.png"  alt="register"/>
-
->> LOGIN<img src="./screenshots/login.png"  alt="login"/>
-
-
->> CREATE ORDER <img src="./screenshots/post-order.png" alt="create-order"/>
-
-
->> GET CUSTOMER ORDERS <img src="./screenshots/get-cust-order.png" alt="get-cust-order"/>
-
 
 # 🛠 Technologies Used
 
@@ -87,6 +75,20 @@
 # Live Link
 
 > > [@Live Link](https://customer-order-service-sjbl.onrender.com/)
+
+
+# API Endpoints
+
+>> REGISTER<img src="./screenshots/register.png"  alt="register"/>
+
+>> LOGIN<img src="./screenshots/login.png"  alt="login"/>
+
+
+>> CREATE ORDER <img src="./screenshots/post-order.png" alt="create-order"/>
+
+
+>> GET CUSTOMER ORDERS <img src="./screenshots/get-cust-order.png" alt="get-cust-order"/>
+
 
 
 # Authors
