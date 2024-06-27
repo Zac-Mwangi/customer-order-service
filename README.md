@@ -76,6 +76,13 @@
 
 > > [@Live Link](https://customer-order-service-sjbl.onrender.com/)
 
+# Live Admin Link
+> [@Live Admin](https://customer-order-service-sjbl.onrender.com/admin)
+
+> > email : admin@mail.com
+> 
+> > password : admin@mail.com
+
 
 # API Endpoints
 
