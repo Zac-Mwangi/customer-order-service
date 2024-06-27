@@ -95,11 +95,23 @@ WSGI_APPLICATION = "CustomerOrderService.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+import dj_database_url
+
+# DATABASES = {
+#     "default": dj_database_url.parse(
+#         "postgresql://customer_order_user:F3xf0L4Jh4zVzsIZuSHeorVSCM7jAkw7@dpg-cpujkd5ds78s73ducer0-a.oregon-postgres.render.com/customer_order"
+#     ),
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.parse(env("DATABASE_URL")),
 }
 
 
