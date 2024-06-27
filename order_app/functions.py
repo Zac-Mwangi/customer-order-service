@@ -27,3 +27,8 @@ class SMS:
 
 
 sms_service = SMS()
+
+
+# why this error
+
+# {'SMSMessageData': {'Message': 'Sent to 0/1 Total Cost: 0', 'Recipients': [{'cost': '0', 'messageId': 'None', 'number': '+254790780464', 'status': 'UserInBlacklist', 'statusCode': 406}]}}
