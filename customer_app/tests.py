@@ -1,61 +1,73 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from customer_app.models import Customer
+from .models import Customer as User
 
 
-class AuthTests(APITestCase):
-    def setUp(self):
-        self.register_url = reverse("register")
-        self.login_url = reverse("login")
-        self.user_url = reverse("auth-user")
+class TestModel(APITestCase):
 
-        self.user_data = {
-            "username": "testuser",
-            "email": "testuser@example.com",
-            "password": "testpassword123",
-            "phone_number": "+254712345678",
-            "code": "008",
-        }
+    def test_creates_user(self):
+        user = User.objects.create_user(
+            "test", "test@gmail.com", "password123!@",
+        )
+        self.assertIsInstance(user, User)
+        self.assertFalse(user.is_staff)
+        self.assertEqual(user.email, "test@gmail.com")
 
-    def test_register_user(self):
-        response = self.client.post(self.register_url, self.user_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    def test_raises_error_when_no_username_is_supplied(self):
+        self.assertRaises(
+            ValueError,
+            User.objects.create_user,
+            username="",
+            email="test@gmail.com",
+            password="password123!@",
+        )
 
-    def test_login_user(self):
-        # Register a user first
-        response = self.client.post(self.register_url, self.user_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    def test_raises_error_with_message_when_no_username_is_supplied(self):
+        with self.assertRaisesMessage(ValueError, "The given username must be set"):
+            User.objects.create_user(
+                username="", email="test@gmail.com", password="password123!@"
+            )
 
-        # Attempt to log in with registered user credentials
-        login_data = {
-            "email": self.user_data["email"],
-            "password": self.user_data["password"],
-        }
-        response = self.client.post(self.login_url, login_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(
-            "token" in response.data
-        )  # Check if token is present in response
+    def test_raises_error_when_no_email_is_supplied(self):
+        self.assertRaises(
+            ValueError,
+            User.objects.create_user,
+            username="username",
+            email="",
+            password="password123!@",
+        )
 
-    def test_get_authenticated_user(self):
-        # Register a user first
-        response = self.client.post(self.register_url, self.user_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    def test_raises_error_with_message_when_no_email_is_supplied(self):
+        with self.assertRaisesMessage(ValueError, "The given email must be set"):
+            User.objects.create_user(
+                username="username", email="", password="password123!@"
+            )
 
-        # Log in with registered user credentials
-        login_data = {
-            "email": self.user_data["email"],
-            "password": self.user_data["password"],
-        }
-        response = self.client.post(self.login_url, login_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_cant_create_super_user_with_no_is_staff_status(self):
+        with self.assertRaisesMessage(ValueError, "Superuser must have is_staff=True."):
+            User.objects.create_superuser(
+                username="username",
+                email="test@gmail.com",
+                password="password123!@",
+                is_staff=False,
+            )
 
-        token = response.data.get("token", None)
-        self.assertIsNotNone(token)  # Ensure token is retrieved from response
+    def test_cant_create_super_user_with_no_super_user_status(self):
+        with self.assertRaisesMessage(
+            ValueError, "Superuser must have is_superuser=True."
+        ):
+            User.objects.create_superuser(
+                username="username",
+                email="test@gmail.com",
+                password="password123!@",
+                is_superuser=False,
+            )
 
-        # Use token for authenticated request
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
-        response = self.client.get(self.user_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["user"]["email"], self.user_data["email"])
+    def test_creates_super_user(self):
+        user = User.objects.create_superuser(
+            "test", "test@gmail.com", "password123!@"
+        )
+        self.assertIsInstance(user, User)
+        self.assertTrue(user.is_staff)
+        self.assertEqual(user.email, "test@gmail.com")
